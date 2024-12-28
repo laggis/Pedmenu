@@ -1,157 +1,142 @@
-# Welcome Discord Bot
+# PedMenu for FiveM
 
-A feature-rich Discord bot designed to welcome new members to your server with customizable messages, images, and role management capabilities.
+A comprehensive FiveM resource that adds an intuitive menu system for spawning and managing peds (NPCs) in your FiveM server. Perfect for roleplay servers, custom scenarios, or any server that needs advanced ped management.
 
 ## Features
 
-- **Welcome Messages:**
-  - Customizable welcome messages
-  - Support for dynamic content (username, server name, etc.)
-  - Optional embedded messages
-  - Image attachment support
+- **Ped Spawning:**
+  - Spawn any GTA V ped model
+  - Custom positioning and rotation
+  - Bulk spawn capability
+  - Save favorite ped models
 
-- **Role Management:**
-  - Automatic role assignment
-  - Role selection menus
-  - Temporary role assignment
-  - Role hierarchy respect
+- **Ped Management:**
+  - Control ped behavior
+  - Set ped animations
+  - Adjust ped attributes
+  - Delete individual or all spawned peds
 
-- **Customization:**
-  - Custom welcome channels
-  - Message formatting options
-  - Welcome image templates
-  - Multiple language support
+- **Menu System:**
+  - Clean and intuitive interface
+  - Easy-to-navigate categories
+  - Search functionality
+  - Customizable keybinds
 
-- **Additional Features:**
-  - Member counting
-  - Join/Leave logging
-  - Custom commands
-  - Server statistics
+- **Advanced Options:**
+  - Ped relationship settings
+  - Animation control
+  - Weapon management
+  - Task assignment
 
 ## Prerequisites
 
-- Node.js v16.9.0 or higher
-- Discord.js
-- A Discord Bot Token
-- Basic understanding of Discord bot hosting
+- FiveM Server
+- ESX/QBCore Framework (optional, but recommended)
+- Basic understanding of FiveM resource management
 
 ## Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/laggis/Welcome-Discord-bot.git
-cd Welcome-Discord-bot
+1. Download the latest release from the [releases page](https://github.com/laggis/Pedmenu/releases)
+
+2. Extract the `pedmenu` folder to your server's resources directory
+
+3. Add to your `server.cfg`:
+```cfg
+ensure pedmenu
 ```
 
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Configure the bot:
-   - Rename `config.example.js` to `config.js`
-   - Add your bot token and customize settings
-
-4. Start the bot:
-```bash
-node index.js
-```
+4. Configure the settings in `config.lua` to match your server's needs
 
 ## Configuration
 
-Example `config.js`:
-```javascript
-module.exports = {
-    token: 'YOUR_BOT_TOKEN',
-    prefix: '!',
-    welcomeChannel: 'welcome',
-    
-    // Welcome message settings
-    welcomeMessage: 'Welcome {user} to {server}!',
-    enableEmbed: true,
-    
-    // Role settings
-    autoRole: 'Member',
-    enableRoleMenu: true,
-    
-    // Customization
-    embedColor: '#FF5733',
-    showJoinDate: true,
-    
-    // Logging
-    enableLogging: true,
-    logChannel: 'member-logs'
-};
+Example configuration in `config.lua`:
+```lua
+Config = {}
+
+Config.OpenKey = 'F5'  -- Key to open the menu
+Config.AdminOnly = true  -- Restrict to admins only
+Config.MaxPeds = 10  -- Maximum peds per player
+Config.DefaultScenario = 'WORLD_HUMAN_STAND_IMPATIENT'
+
+-- Add your custom ped categories
+Config.Categories = {
+    ['Police'] = {
+        's_m_y_cop_01',
+        's_f_y_cop_01'
+    },
+    ['Civilians'] = {
+        'a_m_y_skater_01',
+        'a_f_y_tourist_01'
+    }
+}
 ```
 
 ## Usage
 
 ### Basic Commands
-- `!welcome` - Send a test welcome message
-- `!setwelcome <message>` - Set custom welcome message
-- `!toggleembed` - Toggle embedded messages
-- `!welcomechannel <channel>` - Set welcome channel
+- `/pedmenu` - Open the ped menu
+- `/delpeds` - Delete all spawned peds
+- `/pedanim [animation]` - Make selected ped play animation
+- `/pedtask [task]` - Assign task to selected ped
 
-### Welcome Message Variables
-- `{user}` - Member's username
-- `{server}` - Server name
-- `{memberCount}` - Current member count
-- `{mention}` - Member mention
-- `{joinDate}` - Member join date
+### Menu Navigation
+1. Press the configured key (default: F5) to open the menu
+2. Navigate through categories using arrow keys
+3. Select ped models to spawn
+4. Use the management options to control spawned peds
 
-### Role Management
-- `!autorole <role>` - Set automatic role
-- `!temprole <user> <role> <duration>` - Assign temporary role
-- `!rolemenu` - Create role selection menu
+### Ped Management
+- Right-click on spawned peds for quick actions
+- Use the management tab for advanced options
+- Save frequently used peds as favorites
+- Adjust ped behavior and attributes
 
-## Customizing Welcome Messages
+## Permissions
 
-### Text-Only Message:
-```javascript
-{
-    content: 'Welcome {user} to {server}! You are member #{memberCount}!'
-}
+Configure permissions in your server's ACL:
+```
+add_ace group.admin pedmenu.admin allow
+add_ace group.moderator pedmenu.spawn allow
 ```
 
-### Embedded Message:
-```javascript
-{
-    embed: {
-        title: 'Welcome to {server}!',
-        description: 'Hey {mention}, welcome to our community!',
-        color: '#FF5733',
-        thumbnail: '{userAvatar}'
-    }
-}
-```
+## Features in Detail
 
-## Event Logging
+### Ped Spawning
+- Precise positioning with coordinates
+- Rotation control
+- Health and armor settings
+- Weapon loadout configuration
 
-The bot can log various events:
-- Member joins
-- Member leaves
-- Role assignments
-- Welcome message sends
-- Configuration changes
+### Ped Behavior
+- Set walking style
+- Configure combat behavior
+- Adjust relationship groups
+- Control scenario playback
+
+### Menu Customization
+- Change menu colors
+- Adjust menu position
+- Customize category names
+- Add custom ped models
 
 ## Troubleshooting
 
 Common issues and solutions:
 
-1. **Bot Not Responding:**
-   - Verify bot token
-   - Check bot permissions
-   - Ensure proper Node.js version
+1. **Menu Won't Open:**
+   - Check keybind configuration
+   - Verify permissions
+   - Ensure resource is started
 
-2. **Welcome Messages Not Sending:**
-   - Check channel permissions
-   - Verify welcome channel setting
-   - Confirm bot has required permissions
+2. **Peds Not Spawning:**
+   - Check entity limits
+   - Verify ped model names
+   - Confirm spawn coordinates
 
-3. **Role Assignment Issues:**
-   - Check role hierarchy
-   - Verify bot role permissions
-   - Ensure roles exist
+3. **Performance Issues:**
+   - Reduce max ped limit
+   - Clear unnecessary peds
+   - Check server performance
 
 ## Contributing
 
@@ -165,18 +150,18 @@ We welcome contributions! Here's how:
 
 ## Planned Features
 
-- Welcome image generator
-- Interactive welcome messages
-- Advanced role management
-- Custom welcome workflows
-- Multi-language support
+- Advanced AI behavior systems
+- More animation options
+- Custom scenario creator
+- Enhanced ped customization
+- Network synchronization improvements
 
 ## Support
 
 Need help?
-1. Check the [Issues](https://github.com/laggis/Welcome-Discord-bot/issues) page
+1. Check the [Issues](https://github.com/laggis/Pedmenu/issues) page
 2. Create a new issue with detailed information
-3. Include error messages and steps to reproduce
+3. Join our Discord community (if available)
 
 ## License
 
@@ -186,26 +171,21 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Created by Laggis
 
-## Best Practices
+## Acknowledgments
 
-1. **Security:**
-   - Keep your bot token private
-   - Regularly update dependencies
-   - Monitor bot permissions
+- FiveM community
+- Contributors and testers
+- Inspiration from various ped management systems
 
-2. **Performance:**
-   - Limit welcome message size
-   - Use caching when possible
-   - Clean up temporary roles
+## Version History
 
-3. **Customization:**
-   - Test messages before deployment
-   - Keep backup of configurations
-   - Document custom changes
+- 1.0.0: Initial release
+- 1.1.0: Added advanced ped controls
+- 1.2.0: Menu system overhaul
+- Current: See releases page
 
 ## Notes
 
-- Regular updates recommended
-- Backup your config files
-- Monitor Discord API changes
-- Test in development server first
+- Always test new features in a development environment
+- Keep track of spawned peds to maintain server performance
+- Regular cleanup of unused peds is recommended
